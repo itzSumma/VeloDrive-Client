@@ -17,16 +17,17 @@ const AddCarPage = () => {
   const router = useRouter();
   const [loading, setLoading] = useState(false);
 
+  // ⚠️ ডেভেলপমেন্ট ও প্রোডাকশনের জন্য গ্লোবাল ব্যাকএন্ড URL ভেরিয়েবল
   const SERVER_URL = "http://localhost:5000"; 
 
   const onSubmit = async (event) => {
     event.preventDefault();
-    setLoading(true); // 🚀 ১. এখানে লোডিং ট্রু করা হলো (আগে কমেন্ট করা ছিল)
+    setLoading(true); 
 
     const formData = new FormData(event.currentTarget);
     const rawCarData = Object.fromEntries(formData.entries());
 
-    // 🚀 ২. ডাটাবেজে পাঠানোর আগে প্রাইস ও সিট সংখ্যাকে Number-এ রূপান্তর করা হলো
+    // 🚀 ডেটাবেজে পাঠানোর আগে প্রাইস ও সিট সংখ্যাকে Number-এ রূপান্তর
     const carData = {
       ...rawCarData,
       dailyRentPrice: Number(rawCarData.dailyRentPrice),
@@ -53,62 +54,90 @@ const AddCarPage = () => {
       toast.error("Failed to connect to server.");
       console.error(error);
     } finally {
-      setLoading(false); // কাজ শেষে লোডিং ফলস হয়ে যাবে
+      setLoading(false); 
     }
   };
 
   return (
-    <div>
-      <main className="mx-auto max-w-5xl px-4 py-10">
-        <h1 className="text-4xl font-bold text-slate-950">Add Car</h1>
-        <p className="mt-2 text-slate-600">List your vehicle for VeloDrive customers.</p>
+    <div className="min-h-screen bg-slate-950 text-white select-none relative overflow-hidden">
+      
+      {/* 🔮 ব্যাকগ্রাউন্ডে নিয়ন গ্লো ইফেক্ট */}
+      <div className="absolute top-1/4 left-1/2 -translate-x-1/2 -translate-y-1/2 -z-0 h-96 w-96 rounded-full bg-cyan-500/5 blur-[120px] pointer-events-none" />
+
+      <main className="mx-auto max-w-5xl px-4 py-10 relative z-10">
+        {/* টাইটেল গ্রেডিয়েন্ট টেক্সট */}
+        <h1 className="text-4xl font-extrabold tracking-tight">
+          Add <span className="bg-gradient-to-r from-cyan-400 to-blue-500 bg-clip-text text-transparent">New Car</span>
+        </h1>
+        <p className="mt-2 text-slate-400">List your vehicle for VeloDrive customers.</p>
         
-        <form onSubmit={onSubmit} className="mt-8 grid gap-5 rounded border border-slate-200 bg-white p-6 md:grid-cols-2">
+        {/* 🛠️ ডার্ক মোড এবং মডার্ন বর্ডার ইনপুট ফর্ম */}
+        <form 
+          onSubmit={onSubmit} 
+          className="mt-8 grid gap-6 rounded-xl border border-white/5 bg-slate-900/20 p-6 md:p-8 backdrop-blur-md md:grid-cols-2"
+        >
           {fields.map(([name, label, placeholder]) => (
-            <label key={name} className="grid gap-2 text-sm font-semibold text-slate-700">
+            <label key={name} className="grid gap-2 text-sm font-semibold text-slate-300">
               {label}
               <input 
                 required 
                 name={name}
-                // দাম এবং সিট সংখ্যার ফিল্ডে টাইপ 'number' দেওয়া ভালো
                 type={name === "dailyRentPrice" || name === "seatCapacity" ? "number" : "text"}
                 placeholder={placeholder} 
-                className="rounded border border-slate-300 px-4 py-3 font-normal outline-none focus:border-cyan-500" 
+                className="rounded-lg border border-white/10 bg-slate-950/40 px-4 py-3 font-normal text-white placeholder-slate-600 outline-none transition-all duration-300 focus:border-cyan-500/50 focus:bg-slate-950/80" 
               />
             </label>
           ))}
           
-          <label className="grid gap-2 text-sm font-semibold text-slate-700">
+          {/* কার টাইপ সিলেক্ট */}
+          <label className="grid gap-2 text-sm font-semibold text-slate-300">
             Car Type
-            <select required name="type" className="rounded border border-slate-300 px-4 py-3 font-normal outline-none focus:border-cyan-500 bg-white">
-              <option value="SUV">SUV</option>
-              <option value="Sedan">Sedan</option>
-              <option value="Hatchback">Hatchback</option>
-              <option value="Luxury">Luxury</option>
+            <select 
+              required 
+              name="type" 
+              className="rounded-lg border border-white/10 bg-slate-950 px-4 py-3 font-normal text-white outline-none transition-all duration-300 focus:border-cyan-500/50 focus:bg-slate-950/80"
+            >
+              <option value="SUV" className="bg-slate-950">SUV</option>
+              <option value="Sedan" className="bg-slate-950">Sedan</option>
+              <option value="Hatchback" className="bg-slate-950">Hatchback</option>
+              <option value="Luxury" className="bg-slate-950">Luxury</option>
             </select>
           </label>
           
-          <label className="grid gap-2 text-sm font-semibold text-slate-700">
+          {/* অ্যাভেইলঅ্যাবিলিটি সিলেক্ট */}
+          <label className="grid gap-2 text-sm font-semibold text-slate-300">
             Availability Status
-            <select required name="availability" className="rounded border border-slate-300 px-4 py-3 font-normal outline-none focus:border-cyan-500 bg-white">
-              <option value="available">Available</option>
-              <option value="unavailable">Unavailable</option>
+            <select 
+              required 
+              name="availability" 
+              className="rounded-lg border border-white/10 bg-slate-950 px-4 py-3 font-normal text-white outline-none transition-all duration-300 focus:border-cyan-500/50 focus:bg-slate-950/80"
+            >
+              <option value="available" className="bg-slate-950">Available</option>
+              <option value="unavailable" className="bg-slate-950">Unavailable</option>
             </select>
           </label>
           
-          <label className="grid gap-2 text-sm font-semibold text-slate-700 md:col-span-2">
+          {/* ডেসক্রিপশন টেক্সট এরিয়া */}
+          <label className="grid gap-2 text-sm font-semibold text-slate-300 md:col-span-2">
             Description
-            <textarea required name="description" rows={5} placeholder="Describe features, condition, rental notes, and comfort details." className="rounded border border-slate-300 px-4 py-3 font-normal outline-none focus:border-cyan-500" />
+            <textarea 
+              required 
+              name="description" 
+              rows={5} 
+              placeholder="Describe features, condition, rental notes, and comfort details." 
+              className="rounded-lg border border-white/10 bg-slate-950/40 px-4 py-3 font-normal text-white placeholder-slate-600 outline-none transition-all duration-300 focus:border-cyan-500/50 focus:bg-slate-950/80 resize-none" 
+            />
           </label>
           
+          {/* 🏎️ সাবমিট বাটন (প্রিমিয়াম নিয়ন লুক ও মোবাইল টাচ ফিডব্যাক সহ) */}
           <Button 
             type="submit" 
             isLoading={loading}
             disabled={loading}
-            className={`md:col-span-2 font-semibold text-white transition-all duration-300 py-6 text-base rounded-lg
+            className={`md:col-span-2 font-bold text-slate-950 transition-all duration-300 py-6 text-base rounded-lg
               ${loading 
-                ? "bg-slate-400 cursor-not-allowed shadow-none" 
-                : "bg-gradient-to-r from-cyan-500 to-blue-500 hover:from-cyan-600 hover:to-blue-600 shadow-md shadow-cyan-500/20 active:scale-[0.98]"
+                ? "bg-slate-800 text-slate-500 cursor-not-allowed shadow-none" 
+                : "bg-gradient-to-r from-cyan-500 to-blue-500 md:hover:from-cyan-400 md:hover:to-blue-400 shadow-lg shadow-cyan-500/10 active:scale-[0.98]"
               }`}
           >
             {loading ? "Processing, Please Wait..." : "Add Car to Fleet"}
