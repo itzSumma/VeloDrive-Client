@@ -26,12 +26,18 @@ const Navbar = () => {
       <nav className="mx-auto flex max-w-7xl flex-col gap-4 md:flex-row md:items-center md:justify-between">
         
         
-        <Link href="/" className="flex items-center gap-2 text-xl font-bold text-slate-950">
-          <span className="grid h-10 w-10 place-items-center rounded bg-cyan-500 text-white">
-            <CarFront size={22} />
-          </span>
-          DriveFleet
-        </Link>
+       <Link
+  href="/"
+  className="flex items-center gap-2 text-xl font-bold text-slate-950"
+>
+  <span className="flex h-10 w-10 items-center justify-center rounded bg-cyan-500 text-white">
+    <CarFront size={22} />
+  </span>
+
+  <span>
+    Velo<span className="text-cyan-500">Drive</span>
+  </span>
+</Link>
 
        
         <ul className="flex flex-wrap gap-5 text-sm font-medium text-slate-700 items-center">
@@ -77,7 +83,7 @@ const Navbar = () => {
               </DropdownMenu>
             </Dropdown>
           ) : (
-            /* ইউজার লগইন না থাকলে: Login ও Register বাটন */
+           
             <ul className="flex items-center gap-4 text-sm font-medium">
               <li>
                 <Link href="/login" className="text-slate-700 hover:text-cyan-500 transition">Login</Link>
