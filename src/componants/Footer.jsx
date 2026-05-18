@@ -8,7 +8,7 @@ const Footer = () => {
         
        
         <div className="mb-12">
-          <h1 className="text-5xl font-bold text-white md:text-6xl">DriveFleet</h1>
+          <h1 className="text-5xl font-bold text-white md:text-6xl">VeloDrive</h1>
           <p className="mt-4 max-w-xl text-sm leading-relaxed md:text-base">
             Reliable car rentals, simple booking, and owner tools for managing vehicle listings. 
             Find your perfect ride or list your vehicle today.
@@ -23,7 +23,7 @@ const Footer = () => {
             <h3 className="mb-4 text-xs font-bold uppercase tracking-wider text-white">Contact Info</h3>
             <ul className="space-y-2 text-sm">
               <li>Rajshahi, Bangladesh</li>
-              <li className="hover:text-white transition cursor-pointer">support@drivefleet.com</li>
+              <li className="hover:text-white transition cursor-pointer">support@velodrive.com</li>
               <li>+880 1700 000 000</li>
             </ul>
           </div>
@@ -72,7 +72,7 @@ const Footer = () => {
 
         
         <div className="mt-12 flex flex-col items-center justify-between border-t border-slate-900 pt-6 md:flex-row">
-          <p className="text-xs">© 2026 DriveFleet. All rights reserved.</p>
+          <p className="text-xs">© 2026 VeloDrive. All rights reserved.</p>
         </div>
       </div>
     </footer>
