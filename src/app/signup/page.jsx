@@ -24,7 +24,7 @@ const SignUpPage = () => {
 
     const formData = new FormData(e.currentTarget);
     const user = Object.fromEntries(formData.entries());
-
+// console.log("Form Data:", user);
     try {
       const { data, error } = await authClient.signUp.email({
         email: user.email,
@@ -59,21 +59,21 @@ const SignUpPage = () => {
   };
 
   return (
-    // 🌐 আপনার হোম পেজের মতো bg-slate-950 এবং selection স্টাইল ব্যবহার করা হয়েছে
+   
     <div className="min-h-screen bg-slate-950 text-white selection:bg-cyan-500 selection:text-slate-950 flex items-center justify-center px-6 py-16 relative overflow-hidden">
       
-      {/* 🔮 ব্যাকগ্রাউন্ডে একটি হালকা সায়ান গ্লো ইফেক্ট (আপনার হোম পেজের ভাইব দেওয়ার জন্য) */}
+   
       <div className="absolute top-1/4 left-1/2 -translate-x-1/2 -translate-y-1/2 w-96 h-96 bg-cyan-500/10 rounded-full blur-[120px] pointer-events-none"></div>
 
       <Card className="w-full max-w-md border border-white/10 bg-slate-900/30 p-8 backdrop-blur-md shadow-2xl rounded-none relative z-10">
         
-        {/* 📝 হেডিং পার্ট (Available Cars Fleet এর মতো সেম গ্রাডিয়েন্ট) */}
+     
         <div className="text-center mb-8">
           <h1 className="text-3xl font-extrabold tracking-tight">
             Create <span className="bg-gradient-to-r from-cyan-400 to-blue-500 bg-clip-text text-transparent">Account</span>
           </h1>
           <p className="text-slate-400 text-sm mt-2">
-            Create your DriveFleet account to start booking.
+            Create your VeloDrive account to start booking.
           </p>
         </div>
 
@@ -146,20 +146,20 @@ const SignUpPage = () => {
             <FieldError className="text-xs text-rose-400 mt-1" />
           </TextField>
 
-          {/* 🔘 মেইন বাটন (আপনার ব্যানারের বাটনের মতো সায়ান কালার ও স্কয়ার শেপ) */}
+        
           <Button className="w-full mt-2 bg-cyan-500 hover:bg-cyan-600 font-bold text-slate-950 transition-colors rounded-none" type="submit">
             Create Account
           </Button>
         </Form>
 
-        {/* 🔄 ডিভাইডার সেকশন */}
+      
         <div className="flex justify-center items-center gap-3 w-full my-5">
           <Separator className="flex-1 bg-white/10" />
           <div className="whitespace-nowrap text-xs uppercase tracking-wider text-slate-500"> Or sign up with </div>
           <Separator className="flex-1 bg-white/10" />
         </div>
 
-        {/* 🌐 গুগল সাইন ইন */}
+        
         <div>
           <Button 
             onClick={handleGoogleSignin} 
@@ -169,7 +169,7 @@ const SignUpPage = () => {
           </Button>
         </div>
 
-        {/* 🔗 লগইন লিঙ্ক */}
+      
         <p className="text-center text-sm text-slate-400 mt-6">
           Already have an account?{" "}
           <Link className="font-semibold text-cyan-400 hover:text-cyan-300 transition-colors" href="/login">
