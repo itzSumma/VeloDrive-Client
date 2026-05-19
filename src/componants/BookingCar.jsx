@@ -3,18 +3,27 @@
 import { Button, Card } from "@heroui/react";
 import React, { useState } from "react";
 import toast from "react-hot-toast";
+// 🎯 Better-Auth ক্লায়েন্ট ইম্পোর্ট
+import { authClient } from "@/lib/auth-client"; 
 
 const BookingCar = ({ destination: car }) => {
   const [driverNeeded, setDriverNeeded] = useState("No");
   const [specialNote, setSpecialNote] = useState("");
   const [loading, setLoading] = useState(false);
 
-  // 🔌 সরাসরি লোকাল ব্যাকএন্ড URL
-  const SERVER_URL = "http://localhost:5000";
+  // 🎯 Better-Auth থেকে কারেন্ট লগইন করা ইউজারের ডাটা রিড করা হচ্ছে
+  const { data: session } = authClient.useSession(); 
+  const userEmail = session?.user?.email;
 
+  const SERVER_URL = "http://localhost:5000";
   const rent = car.dailyRentPrice || car.price || 0;
 
   const handleBooking = async () => {
+    if (!userEmail) {
+      toast.error("Please login first to book a car!");
+      return;
+    }
+
     setLoading(true);
 
     try {
@@ -25,10 +34,13 @@ const BookingCar = ({ destination: car }) => {
         },
         body: JSON.stringify({
           carId: car._id,
+          carName: car.name,          // 💡 My Bookings পেজে নাম দেখানোর জন্য পাঠানো জরুরি
+          carImage: car.image,
           driverNeeded,
           specialNote,
           totalPrice: rent,
-          // userId: "mock_user_id_here" // ব্যাকএন্ডে যদি ইউজার আইডি লাগে, এখানে পাস করতে পারেন
+          bookingDate: new Date().toISOString(), // 📅 কারেন্ট ডেট পাঠানো হচ্ছে
+          userEmail: userEmail,       // 🔥 এই ফিল্ডটি ব্যাকএন্ডের কুয়েরির সাথে মিলবে
         }),
       });
 
@@ -38,7 +50,7 @@ const BookingCar = ({ destination: car }) => {
       }
 
       toast.success("You booked successfully!");
-      setSpecialNote(""); // বুকিং শেষ হলে টেক্সট এরিয়া ক্লিয়ার হবে
+      setSpecialNote(""); 
     } catch (error) {
       console.error("Booking error:", error);
       toast.error("Failed to connect to the server.");
@@ -48,10 +60,7 @@ const BookingCar = ({ destination: car }) => {
   };
 
   return (
-    // 🔮 গ্লাস-মরফিজম ডার্ক থিম কার্ড লেআউট
     <Card className="rounded-xl border border-white/5 bg-slate-900/20 p-6 backdrop-blur-md text-white shadow-xl shadow-cyan-500/5 relative overflow-hidden select-none">
-      
-      {/* ব্যাকগ্রাউন্ডে সূক্ষ্ম নিয়ন গ্লো */}
       <div className="absolute -bottom-10 -left-10 -z-0 h-24 w-24 rounded-full bg-cyan-500/10 blur-[40px] pointer-events-none" />
 
       <div className="relative z-10">
@@ -62,7 +71,6 @@ const BookingCar = ({ destination: car }) => {
         </h2>
         <p className="mt-1 text-xs text-slate-400">for {car.name || "this vehicle"}</p>
 
-        {/* ড্রাইভার রিকোয়ারমেন্ট সিলেক্ট অপশন */}
         <label className="mt-6 grid gap-2 text-sm font-semibold text-slate-300">
           Driver Needed
           <select
@@ -75,7 +83,6 @@ const BookingCar = ({ destination: car }) => {
           </select>
         </label>
 
-        {/* স্পেশাল নোট টেক্সট এরিয়া */}
         <label className="mt-4 grid gap-2 text-sm font-semibold text-slate-300">
           Special Note
           <textarea
@@ -87,7 +94,6 @@ const BookingCar = ({ destination: car }) => {
           />
         </label>
 
-        {/* 🏎️ সাবমিট বাটন */}
         <Button
           onClick={handleBooking}
           isLoading={loading}
