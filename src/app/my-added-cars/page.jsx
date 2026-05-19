@@ -1,13 +1,22 @@
 "use client";
+
 import React, { useEffect, useState } from 'react';
 import { authClient } from "@/lib/auth-client";
 import { Button } from "@heroui/react";
+import toast, { Toaster } from 'react-hot-toast';
+import EditCarModal from '@/componants/EditCarModal';
+import DeleteConfirmModal from '@/componants/DeleteConfirmModal';
+
+
 
 const MyAddedCars = () => {
   const { data: session } = authClient.useSession();
   const [cars, setCars] = useState([]);
+  
   const [selectedCar, setSelectedCar] = useState(null);
-  const [isPopupOpen, setIsPopupOpen] = useState(false);
+  const [carToDelete, setCarToDelete] = useState(null);
+  const [isEditOpen, setIsEditOpen] = useState(false);
+  const [isDeleteOpen, setIsDeleteOpen] = useState(false);
 
   useEffect(() => {
     if (session?.user?.email) {
@@ -17,69 +26,84 @@ const MyAddedCars = () => {
     }
   }, [session]);
 
-  const openEditPopup = (car) => {
-    setSelectedCar(car);
-    setIsPopupOpen(true);
+  const handleUpdate = async (e, id) => {
+    e.preventDefault();
+    const form = e.target;
+    const updatedData = {
+      dailyRentPrice: form.dailyRentPrice.value,
+      availability: form.availability.value,
+      description: form.description.value,
+    };
+
+    const loadingToast = toast.loading("Updating...");
+    try {
+      const res = await fetch(`http://localhost:5000/cars/${id}`, {
+        method: "PUT",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(updatedData),
+      });
+      if (res.ok) {
+        toast.dismiss(loadingToast);
+        toast.success("Updated successfully!");
+        setIsEditOpen(false);
+        setCars(cars.map(c => c._id === id ? { ...c, ...updatedData } : c));
+      } else {
+        throw new Error();
+      }
+    } catch { 
+        toast.dismiss(loadingToast);
+        toast.error("Failed to update!"); 
+    }
+  };
+
+  const handleDelete = async (id) => {
+    try {
+      const res = await fetch(`http://localhost:5000/cars/${id}`, { method: "DELETE" });
+      if (res.ok) {
+        toast.success("Deleted successfully!");
+        setCars(cars.filter(c => c._id !== id));
+        setIsDeleteOpen(false);
+      } else {
+        throw new Error();
+      }
+    } catch { 
+        toast.error("Failed to delete!"); 
+    }
   };
 
   return (
     <div className="min-h-screen bg-slate-950 p-6 md:p-12 text-white">
+      <Toaster position="top-right" />
       <h1 className="text-3xl font-bold mb-8">My Added Cars</h1>
-
-      {/* কার্ড লিস্ট */}
+      
       <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
         {cars.map((car) => (
-          <div key={car._id} className="bg-slate-900 border border-white/10 p-5 rounded-xl hover:border-cyan-500/50 transition-all">
+          <div key={car._id} className="bg-slate-900 border border-white/10 p-5 rounded-xl">
             <img src={car.image} alt={car.name} className="w-full h-40 object-cover rounded-lg mb-4" />
             <h2 className="text-xl font-bold">{car.name}</h2>
-            <p className="text-slate-400 text-sm mt-1">Location: {car.pickupLocation}</p>
-            <p className="text-slate-400 text-sm">Type: {car.type}</p>
-            <p className="text-slate-400 text-sm">Seats: {car.seatCapacity}</p>
             <p className="text-cyan-400 font-semibold mt-2">${car.dailyRentPrice}/day</p>
-            <p className="text-sm mt-1">Status: 
-                <span className={car.availability === 'available' ? 'text-green-400 ml-1' : 'text-red-400 ml-1'}>
-                    {car.availability.toUpperCase()}
-                </span>
-            </p>
             
-            <Button color="primary" variant="flat" className="mt-4 w-full" onClick={() => openEditPopup(car)}>
-              Edit Car
-            </Button>
+            <div className="flex gap-2 mt-4">
+              <Button color="primary" variant="flat" className="flex-1" onClick={() => { setSelectedCar(car); setIsEditOpen(true); }}>Edit</Button>
+              <Button color="danger" variant="flat" className="flex-1" onClick={() => { setCarToDelete(car); setIsDeleteOpen(true); }}>Delete</Button>
+            </div>
           </div>
         ))}
       </div>
 
-      {/* এডিট পপআপ */}
-      {isPopupOpen && (
-        <div className="fixed inset-0 bg-black/80 flex items-center justify-center z-50 p-4">
-          <div className="bg-slate-900 p-6 rounded-2xl w-full max-w-sm border border-slate-700 shadow-2xl">
-            <h2 className="text-xl font-bold mb-4">Edit: {selectedCar?.name}</h2>
-            
-            <div className="space-y-4">
-              <div>
-                <label className="text-xs text-slate-400">Price ($/day)</label>
-                <input defaultValue={selectedCar?.dailyRentPrice} type="number" className="w-full p-2 bg-slate-800 rounded border border-slate-600 outline-none mt-1" />
-              </div>
-              <div>
-                <label className="text-xs text-slate-400">Availability</label>
-                <select defaultValue={selectedCar?.availability} className="w-full p-2 bg-slate-800 rounded border border-slate-600 outline-none mt-1">
-                  <option value="available">Available</option>
-                  <option value="unavailable">Unavailable</option>
-                </select>
-              </div>
-              <div>
-                <label className="text-xs text-slate-400">Description</label>
-                <textarea defaultValue={selectedCar?.description} className="w-full p-2 bg-slate-800 rounded border border-slate-600 outline-none mt-1" rows={3} />
-              </div>
-            </div>
-
-            <div className="flex gap-3 mt-6">
-              <Button color="danger" variant="flat" className="flex-1" onClick={() => setIsPopupOpen(false)}>Cancel</Button>
-              <Button color="primary" className="flex-1" onClick={() => setIsPopupOpen(false)}>Update</Button>
-            </div>
-          </div>
-        </div>
-      )}
+      <EditCarModal 
+        isOpen={isEditOpen} 
+        onClose={() => setIsEditOpen(false)} 
+        car={selectedCar} 
+        onUpdate={handleUpdate} 
+      />
+      
+      <DeleteConfirmModal 
+        isOpen={isDeleteOpen} 
+        onClose={() => setIsDeleteOpen(false)} 
+        car={carToDelete} 
+        onDelete={handleDelete} 
+      />
     </div>
   );
 };
