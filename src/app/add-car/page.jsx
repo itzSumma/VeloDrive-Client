@@ -4,6 +4,8 @@ import { Button } from '@heroui/react';
 import React, { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import toast from 'react-hot-toast';
+// 🎯 Better-Auth ক্লায়েন্ট অবজেক্ট ইম্পোর্ট
+import { authClient } from "@/lib/auth-client"; 
 
 const fields = [
   ["name", "Car Name", "Toyota Corolla"],
@@ -16,22 +18,35 @@ const fields = [
 const AddCarPage = () => {
   const router = useRouter();
   const [loading, setLoading] = useState(false);
+  
+  // 🎯 কারেন্ট ইউজারের সেশন ডাটা নেওয়া (ওনার ট্র্যাকিং এর জন্য)
+  const { data: session, isPending } = authClient.useSession(); 
 
   // ⚠️ ডেভেলপমেন্ট ও প্রোডাকশনের জন্য গ্লোবাল ব্যাকএন্ড URL ভেরিয়েবল
   const SERVER_URL = "http://localhost:5000"; 
 
   const onSubmit = async (event) => {
     event.preventDefault();
+    
+    // সেশন লোড না হলে বা ইউজার না থাকলে সাবমিট ব্লক করা
+    if (!session?.user?.email) {
+      toast.error("You must be logged in to add a car.");
+      return;
+    }
+
     setLoading(true); 
 
     const formData = new FormData(event.currentTarget);
     const rawCarData = Object.fromEntries(formData.entries());
 
-    // 🚀 ডেটাবেজে পাঠানোর আগে প্রাইস ও সিট সংখ্যাকে Number-এ রূপান্তর
+    // 🚀 ডেটাবেজে পাঠানোর আগে সঠিক অবজেক্ট ফরম্যাট এবং ওনার ডাটা ম্যাপ করা
     const carData = {
       ...rawCarData,
       dailyRentPrice: Number(rawCarData.dailyRentPrice),
       seatCapacity: Number(rawCarData.seatCapacity),
+      bookingCount: 0, // 📊 চ্যালেঞ্জ পার্টের জন্য ডিফল্ট কাউন্ট সেট করা হলো
+      ownerEmail: session.user.email, // 🔐 রিকোয়ারমেন্ট অনুযায়ী ওনার ট্র্যাকিং ইমেইল
+      ownerName: session.user.name || "Anonymous",
     };
 
     try {
@@ -58,6 +73,16 @@ const AddCarPage = () => {
     }
   };
 
+  // অথেনটিকেশন স্টেট চেক করার সময় লোডার দেখানো
+  if (isPending) {
+    return (
+      <div className="flex min-h-screen flex-col items-center justify-center bg-slate-950 text-white py-20">
+        <div className="h-10 w-10 animate-spin rounded-full border-4 border-white/5 border-t-cyan-500 shadow-lg shadow-cyan-500/10"></div>
+        <p className="mt-4 text-sm font-semibold text-slate-400 animate-pulse">Checking authentication...</p>
+      </div>
+    );
+  }
+
   return (
     <div className="min-h-screen bg-slate-950 text-white select-none relative overflow-hidden">
       
@@ -65,16 +90,16 @@ const AddCarPage = () => {
       <div className="absolute top-1/4 left-1/2 -translate-x-1/2 -translate-y-1/2 -z-0 h-96 w-96 rounded-full bg-cyan-500/5 blur-[120px] pointer-events-none" />
 
       <main className="mx-auto max-w-5xl px-4 py-10 relative z-10">
-        {/* টাইটেল গ্রেডিয়েন্ট টেক্সট */}
+        {/* টাইটেল গ্রেডিয়েন্ট টেক্সট */}
         <h1 className="text-4xl font-extrabold tracking-tight">
           Add <span className="bg-gradient-to-r from-cyan-400 to-blue-500 bg-clip-text text-transparent">New Car</span>
         </h1>
-        <p className="mt-2 text-slate-400">List your vehicle for VeloDrive customers.</p>
+        <p className="mt-2 text-slate-400">List your vehicle for DriveFleet customers.</p>
         
         {/* 🛠️ ডার্ক মোড এবং মডার্ন বর্ডার ইনপুট ফর্ম */}
         <form 
           onSubmit={onSubmit} 
-          className="mt-8 grid gap-6 rounded-xl border border-white/5 bg-slate-900/20 p-6 md:p-8 backdrop-blur-md md:grid-cols-2"
+          className="mt-8 grid gap-6 rounded-xl border border-white/10 bg-slate-900/20 p-6 md:p-8 backdrop-blur-md md:grid-cols-2"
         >
           {fields.map(([name, label, placeholder]) => (
             <label key={name} className="grid gap-2 text-sm font-semibold text-slate-300">
@@ -117,7 +142,7 @@ const AddCarPage = () => {
             </select>
           </label>
           
-          {/* ডেসক্রিপশন টেক্সট এরিয়া */}
+          {/* ডেসক্রিপশন টেক্সট এরিয়া */}
           <label className="grid gap-2 text-sm font-semibold text-slate-300 md:col-span-2">
             Description
             <textarea 
@@ -129,7 +154,7 @@ const AddCarPage = () => {
             />
           </label>
           
-          {/* 🏎️ সাবমিট বাটন (প্রিমিয়াম নিয়ন লুক ও মোবাইল টাচ ফিডব্যাক সহ) */}
+          {/* 🏎️ সাবমিট বাটন */}
           <Button 
             type="submit" 
             isLoading={loading}
