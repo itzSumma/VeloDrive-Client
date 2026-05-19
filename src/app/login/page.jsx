@@ -59,12 +59,12 @@ const LoginPage = () => {
   return (
     <div className="min-h-screen bg-slate-950 text-white selection:bg-cyan-500 selection:text-slate-950 flex items-center justify-center px-6 py-16 relative overflow-hidden">
       
-      {/* Background Glow Effect */}
+   
       <div className="absolute top-1/4 left-1/2 -translate-x-1/2 -translate-y-1/2 w-96 h-96 bg-cyan-500/10 rounded-full blur-[120px] pointer-events-none"></div>
 
       <Card className="w-full max-w-md border border-white/10 bg-slate-900/30 p-8 backdrop-blur-md shadow-2xl rounded-none relative z-10">
         
-        {/* Header */}
+  
         <div className="text-center mb-8">
           <h1 className="text-3xl font-extrabold tracking-tight">
             Welcome <span className="bg-gradient-to-r from-cyan-400 to-blue-500 bg-clip-text text-transparent">Back</span>
@@ -105,7 +105,7 @@ const LoginPage = () => {
           >
             <div className="flex justify-between items-center">
               <Label className="text-xs font-semibold uppercase tracking-wider text-slate-400">Password</Label>
-              {/* ঐচ্ছিক: ফরগট পাসওয়ার্ড লিংক এড করতে পারেন */}
+              
               <Link href="/forgot-password" className="text-xs text-cyan-500 hover:underline">
                 Forgot password?
               </Link>
@@ -122,7 +122,7 @@ const LoginPage = () => {
           </Button>
         </Form>
 
-        {/* Separator */}
+      
         <div className="flex justify-center items-center gap-3 w-full my-5">
           <Separator className="flex-1 bg-white/10" />
           <div className="whitespace-nowrap text-xs uppercase tracking-wider text-slate-500"> Or sign in with </div>
@@ -139,7 +139,7 @@ const LoginPage = () => {
           </Button>
         </div>
 
-        {/* Bottom Navigation */}
+        
         <p className="text-center text-sm text-slate-400 mt-6">
           Don't have an account?{" "}
           <Link className="font-semibold text-cyan-400 hover:text-cyan-300 transition-colors" href="/signup">
