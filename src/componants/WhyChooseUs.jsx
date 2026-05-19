@@ -31,7 +31,7 @@ const WhyChooseUs = () => {
       <div className="max-w-7xl mx-auto px-6 md:px-12">
         <div className="text-center max-w-2xl mx-auto mb-16">
           <h2 className="text-3xl md:text-4xl font-extrabold tracking-tight">
-            Why Choose <span className="bg-gradient-to-r from-cyan-400 to-teal-400 bg-clip-text text-transparent">DriveFleet</span>
+            Why Choose <span className="bg-gradient-to-r from-cyan-400 to-teal-400 bg-clip-text text-transparent">VeloDrive</span>
           </h2>
           <p className="text-slate-400 mt-3">We provide the ultimate premium rental experience with unmatched flexibility and security.</p>
         </div>

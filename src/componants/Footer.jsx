@@ -9,7 +9,7 @@ const Footer = () => {
         
         <div className="flex flex-col gap-4">
           <h2 className="text-2xl font-black bg-gradient-to-r from-cyan-400 via-teal-400 to-blue-500 bg-clip-text text-transparent">
-            DriveFleet.
+            VeloDrive.
           </h2>
           <p className="text-sm text-slate-400 leading-relaxed">
             Premium rentals for everyday journeys. Reliable, secure, and fully automated car booking system.
