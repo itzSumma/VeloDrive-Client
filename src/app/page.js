@@ -4,6 +4,9 @@ import WhyChooseUs from "@/componants/WhyChooseUs";
 import HowItWorks from "@/componants/HowItWorks";
 import { apiBaseUrl } from "@/lib/config";
 
+export const dynamic = "force-dynamic";
+
+
 async function getCarsData() {
   try {
     const res = await fetch(`${apiBaseUrl}/cars`, {
