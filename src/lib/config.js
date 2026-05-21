@@ -1,10 +1,9 @@
+// src/lib/config.js
+
+// এনভায়রনমেন্ট ভেরিয়েবল থেকে মান সংগ্রহ
 const configuredApiBaseUrl = process.env.NEXT_PUBLIC_API_BASE_URL?.trim();
-const isLegacyLocalApi =
-  configuredApiBaseUrl === "http://localhost:5000" ||
-  configuredApiBaseUrl === "https://localhost:5000";
+const configuredAppUrl = process.env.NEXT_PUBLIC_APP_URL?.trim();
 
-export const apiBaseUrl =
-  !configuredApiBaseUrl || isLegacyLocalApi ? "/api" : configuredApiBaseUrl;
-
-export const appBaseUrl =
-  process.env.NEXT_PUBLIC_APP_URL?.trim() || "http://localhost:3000";
+// এক্সপোর্টসমূহ
+export const apiBaseUrl = configuredApiBaseUrl || "https://velo-drive-server.vercel.app";
+export const appBaseUrl = configuredAppUrl || "https://velo-drive-client-kappa.vercel.app";

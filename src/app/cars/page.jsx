@@ -74,10 +74,12 @@ const ExploreCarPage = () => {
           <select
             value={type}
             onChange={(event) => setType(event.target.value)}
-            className="w-full cursor-pointer rounded-lg border border-white/10 bg-slate-900/40 px-4 py-2.5 text-sm text-white shadow-sm outline-none transition-all duration-300 focus:border-cyan-500/50 focus:bg-slate-950 sm:w-40"
-          >
+            className="w-full cursor-pointer rounded-lg border border-white/10 bg-slate-900/40 px-4 py-2.5 text-sm text-white shadow-sm outline-none transition-all duration-300 focus:border-cyan-500/50 focus:bg-slate-950 sm:w-40">
             {carTypes.map((item) => (
-              <option key={item} value={item} className="bg-slate-950 text-white">
+              <option
+                key={item}
+                value={item}
+                className="bg-slate-950 text-white">
                 {item}
               </option>
             ))}
@@ -102,7 +104,9 @@ const ExploreCarPage = () => {
         ) : (
           <div className="flex min-h-[45vh] flex-col items-center justify-center rounded-xl border border-dashed border-white/10 bg-slate-900/10 p-10 text-center backdrop-blur-sm">
             <div className="mb-3 text-4xl text-cyan-500/70">Search</div>
-            <h3 className="text-lg font-bold text-slate-200">No Cars Matched</h3>
+            <h3 className="text-lg font-bold text-slate-200">
+              No Cars Matched
+            </h3>
             <p className="mx-auto mt-1 max-w-xs text-sm text-slate-500">
               Try adjusting your search terms or filter to find available
               vehicles.
