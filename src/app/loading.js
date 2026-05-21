@@ -10,7 +10,7 @@ const LoadingScreen = ({ message = "Loading..." }) => {
       <Spinner 
         size="lg" 
         color="primary" 
-        labelColor="primary"
+        // labelColor প্রপটি এখান থেকে সরিয়ে ফেলুন
         className="mb-4"
       />
       
