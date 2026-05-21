@@ -6,7 +6,7 @@ import { LuMapPin } from "react-icons/lu";
 import { Users } from "lucide-react";
 import Link from "next/link";
 
-// 🎨 কার টাইপ অনুযায়ী ডাইনামিক স্টাইল (মোবাইল এবং ডেস্কটপ অপ্টিমাইজড)
+
 const typeStyles = {
   SUV: {
     badge: "text-cyan-400 bg-cyan-950/40 border-cyan-500/30",
@@ -92,20 +92,20 @@ const ExploreCars = ({ destination: car }) => {
       ${
         isAvailable
           ? `border-white/10 ${currentStyles.cardHover}
-             /* 💻 ডেস্কটপ হোভার অ্যানিমেশন */
+            
              md:hover:-translate-y-1.5 md:hover:shadow-2xl md:hover:shadow-cyan-500/5
              
-             /* 📱 মোবাইল টাচ রেসপন্স (স্টিকি হোভার করবে না) */
+             
              active:translate-y-0 active:scale-[0.98] active:duration-700`
           : "border-white/5 opacity-50 cursor-not-allowed"
       }`}
     >
-      {/* Glow effect (মোবাইল টাচ ও ডেস্কটপ হোভার দুইটাই রিঅ্যাক্ট করবে) */}
+     
       {isAvailable && (
         <div className="pointer-events-none absolute -top-12 -right-12 -z-0 h-24 w-24 rounded-full bg-cyan-500/10 blur-[40px] transition-all duration-500 group-hover:h-32 group-hover:w-32 group-hover:bg-cyan-500/20 group-active:h-36 group-active:w-36 group-active:bg-cyan-400/30" />
       )}
 
-      {/* Image section */}
+     
       <div className="relative z-10 h-52 w-full overflow-hidden border-b border-white/5 bg-slate-900/40 p-2">
         <img
           className={`h-full w-full rounded-lg object-cover transition-transform duration-700 ease-out
@@ -139,9 +139,8 @@ const ExploreCars = ({ destination: car }) => {
         </span>
       </div>
 
-      {/* Content section */}
       <div className="relative z-10 flex flex-1 flex-col p-5">
-        {/* Car type badge */}
+
         <div className="flex items-center justify-between gap-2">
           <span
             className={`rounded border px-2.5 py-1 text-[10px] font-semibold uppercase tracking-wider backdrop-blur ${currentStyles.badge}`}
@@ -150,7 +149,6 @@ const ExploreCars = ({ destination: car }) => {
           </span>
         </div>
 
-        {/* Car title */}
         <h2
           className={`mt-3 line-clamp-1 text-xl font-bold text-white transition-colors duration-300
           ${
@@ -191,7 +189,7 @@ const ExploreCars = ({ destination: car }) => {
           </div>
         </div>
 
-        {/* Price + button */}
+ 
         <div className="mt-auto flex items-center justify-between pt-4">
           <div>
             <h3

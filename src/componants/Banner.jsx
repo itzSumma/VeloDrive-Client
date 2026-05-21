@@ -4,13 +4,13 @@ const Banner = () => {
   return (
     <section className="relative bg-slate-950 text-white overflow-hidden">
       
-      {/* ব্যাকগ্রাউন্ডে হালকা একটি গ্লো ইফেক্ট (ডিজাইন সুন্দর করার জন্য) */}
+  
       <div className="absolute top-1/4 right-0 -z-0 h-96 w-96 rounded-full bg-cyan-500/10 blur-[120px] pointer-events-none"></div>
       <div className="absolute bottom-1/4 left-1/4 -z-0 h-96 w-96 rounded-full bg-blue-500/10 blur-[120px] pointer-events-none"></div>
 
       <div className="relative z-10 mx-auto grid min-h-[620px] max-w-7xl items-center gap-12 px-6 py-16 lg:grid-cols-[1.2fr_0.8fr] md:px-12">
         
-        {/* বাম পাশ: কন্টেন্ট এরিয়া */}
+        
         <div className="flex flex-col items-start gap-6 text-left">
           <p className="rounded-full border border-cyan-500/30 bg-cyan-950/40 px-4 py-1.5 text-xs font-semibold tracking-wide text-cyan-400 uppercase">
             ⚡ Premium rentals for everyday journeys
@@ -43,9 +43,9 @@ const Banner = () => {
           </div>
         </div>
 
-        {/* ডান পাশ: মডার্ন কার ইমেজ এরিয়া */}
+       
         <div className="relative flex items-center justify-center lg:justify-end">
-          {/* ইমেজের পেছনে একটি চমৎকার শ্যাডো/লাইট রিং */}
+          
           <div className="absolute h-64 w-64 md:h-80 md:w-80 rounded-full bg-gradient-to-tr from-cyan-500/20 to-blue-500/20 blur-3xl"></div>
           
           <img 

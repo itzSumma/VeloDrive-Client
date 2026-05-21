@@ -2,7 +2,7 @@ import React from 'react';
 import { Button } from "@heroui/react";
 
 const DeleteConfirmModal = ({ isOpen, onClose, car, onDelete }) => {
-    // যদি মোডাল ওপেন না থাকে, তবে কিছুই রেন্ডার হবে না
+   
     if (!isOpen) return null;
 
     return (

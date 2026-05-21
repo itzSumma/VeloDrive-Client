@@ -45,9 +45,9 @@ const Footer = () => {
         <div>
           <h3 className="text-sm font-bold tracking-wider text-slate-300 uppercase mb-4">Contact Info</h3>
           <ul className="space-y-3 text-sm text-slate-400">
-            <li className="flex items-start gap-2.5"><FiMapPin className="text-cyan-400 shrink-0 mt-0.5" /><span className="leading-relaxed">123 Fleet Street, Rajshahi, Bangladesh</span></li>
-            <li className="flex items-center gap-2.5"><FiPhone className="text-teal-400 shrink-0" /><span>+880 1234 567890</span></li>
-            <li className="flex items-center gap-2.5"><FiMail className="text-blue-400 shrink-0" /><span>support@drivefleet.com</span></li>
+            <li className="flex items-start gap-2.5"><FiMapPin className="text-cyan-400 shrink-0 mt-0.5" /><span className="leading-relaxed"> Rajshahi, Bangladesh</span></li>
+            <li className="flex items-center gap-2.5"><FiPhone className="text-teal-400 shrink-0" /><span>+880 1874760598</span></li>
+            <li className="flex items-center gap-2.5"><FiMail className="text-blue-400 shrink-0" /><span>support@velodrive.com</span></li>
           </ul>
         </div>
 

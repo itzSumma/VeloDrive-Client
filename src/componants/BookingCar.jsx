@@ -3,44 +3,44 @@
 import { Button, Card } from "@heroui/react";
 import React, { useState } from "react";
 import toast from "react-hot-toast";
-// 🎯 Better-Auth ক্লায়েন্ট ইম্পোর্ট
-import { authClient } from "@/lib/auth-client"; 
+import { useRouter } from "next/navigation";
+import { authClient } from "@/lib/auth-client";
+import { apiBaseUrl } from "@/lib/config";
 
 const BookingCar = ({ destination: car }) => {
+  const router = useRouter();
   const [driverNeeded, setDriverNeeded] = useState("No");
   const [specialNote, setSpecialNote] = useState("");
   const [loading, setLoading] = useState(false);
 
-  // 🎯 Better-Auth থেকে কারেন্ট লগইন করা ইউজারের ডাটা রিড করা হচ্ছে
-  const { data: session } = authClient.useSession(); 
+  const { data: session } = authClient.useSession();
   const userEmail = session?.user?.email;
-
-  const SERVER_URL = "http://localhost:5000";
   const rent = car.dailyRentPrice || car.price || 0;
 
   const handleBooking = async () => {
     if (!userEmail) {
       toast.error("Please login first to book a car!");
+      router.push(`/login?redirect=${encodeURIComponent(`/cars/${car._id}`)}`);
       return;
     }
 
     setLoading(true);
 
     try {
-      const res = await fetch(`${SERVER_URL}/bookings`, {
+      const res = await fetch(`${apiBaseUrl}/bookings`, {
         method: "POST",
         headers: {
           "content-type": "application/json",
         },
         body: JSON.stringify({
           carId: car._id,
-          carName: car.name,          // 💡 My Bookings পেজে নাম দেখানোর জন্য পাঠানো জরুরি
+          carName: car.name,
           carImage: car.image,
           driverNeeded,
           specialNote,
           totalPrice: rent,
-          bookingDate: new Date().toISOString(), // 📅 কারেন্ট ডেট পাঠানো হচ্ছে
-          userEmail: userEmail,       // 🔥 এই ফিল্ডটি ব্যাকএন্ডের কুয়েরির সাথে মিলবে
+          bookingDate: new Date().toISOString(),
+          userEmail,
         }),
       });
 
@@ -50,7 +50,8 @@ const BookingCar = ({ destination: car }) => {
       }
 
       toast.success("You booked successfully!");
-      setSpecialNote(""); 
+      setSpecialNote("");
+      setDriverNeeded("No");
     } catch (error) {
       console.error("Booking error:", error);
       toast.error("Failed to connect to the server.");
@@ -60,26 +61,34 @@ const BookingCar = ({ destination: car }) => {
   };
 
   return (
-    <Card className="rounded-xl border border-white/5 bg-slate-900/20 p-6 backdrop-blur-md text-white shadow-xl shadow-cyan-500/5 relative overflow-hidden select-none">
-      <div className="absolute -bottom-10 -left-10 -z-0 h-24 w-24 rounded-full bg-cyan-500/10 blur-[40px] pointer-events-none" />
+    <Card className="relative overflow-hidden rounded-xl border border-white/5 bg-slate-900/20 p-6 text-white shadow-xl shadow-cyan-500/5 backdrop-blur-md select-none">
+      <div className="pointer-events-none absolute -bottom-10 -left-10 -z-0 h-24 w-24 rounded-full bg-cyan-500/10 blur-[40px]" />
 
       <div className="relative z-10">
-        <p className="text-xs font-semibold uppercase tracking-wider text-slate-500">Starting from</p>
+        <p className="text-xs font-semibold uppercase tracking-wider text-slate-500">
+          Starting from
+        </p>
         <h2 className="mt-1 text-3xl font-extrabold text-white">
           ${rent}
           <span className="text-sm font-medium text-slate-500"> / day</span>
         </h2>
-        <p className="mt-1 text-xs text-slate-400">for {car.name || "this vehicle"}</p>
+        <p className="mt-1 text-xs text-slate-400">
+          for {car.name || "this vehicle"}
+        </p>
 
         <label className="mt-6 grid gap-2 text-sm font-semibold text-slate-300">
           Driver Needed
           <select
             value={driverNeeded}
             onChange={(event) => setDriverNeeded(event.target.value)}
-            className="rounded-lg border border-white/10 bg-slate-950 px-3 py-2.5 font-normal text-white outline-none transition-all duration-300 focus:border-cyan-500/50 focus:bg-slate-950/80 cursor-pointer"
+            className="cursor-pointer rounded-lg border border-white/10 bg-slate-950 px-3 py-2.5 font-normal text-white outline-none transition-all duration-300 focus:border-cyan-500/50 focus:bg-slate-950/80"
           >
-            <option value="No" className="bg-slate-950">No (Self Drive)</option>
-            <option value="Yes" className="bg-slate-950">Yes (With Driver)</option>
+            <option value="No" className="bg-slate-950">
+              No (Self Drive)
+            </option>
+            <option value="Yes" className="bg-slate-950">
+              Yes (With Driver)
+            </option>
           </select>
         </label>
 
@@ -89,7 +98,7 @@ const BookingCar = ({ destination: car }) => {
             value={specialNote}
             onChange={(event) => setSpecialNote(event.target.value)}
             rows={4}
-            className="rounded-lg border border-white/10 bg-slate-950/40 px-3 py-2.5 font-normal text-white placeholder-slate-600 outline-none transition-all duration-300 focus:border-cyan-500/50 focus:bg-slate-950 resize-none"
+            className="resize-none rounded-lg border border-white/10 bg-slate-950/40 px-3 py-2.5 font-normal text-white placeholder-slate-600 outline-none transition-all duration-300 focus:border-cyan-500/50 focus:bg-slate-950"
             placeholder="Pickup time, route, or driver notes..."
           />
         </label>
@@ -98,11 +107,11 @@ const BookingCar = ({ destination: car }) => {
           onClick={handleBooking}
           isLoading={loading}
           disabled={loading}
-          className={`mt-6 w-full font-bold text-slate-950 transition-all duration-300 py-6 text-base rounded-lg
-            ${loading 
-              ? "bg-slate-800 text-slate-500 cursor-not-allowed shadow-none" 
-              : "bg-gradient-to-r from-cyan-500 to-blue-500 md:hover:from-cyan-400 md:hover:to-blue-400 shadow-lg shadow-cyan-500/10 active:scale-[0.98]"
-            }`}
+          className={`mt-6 w-full py-6 text-base font-bold text-slate-950 transition-all duration-300 ${
+            loading
+              ? "cursor-not-allowed rounded-lg bg-slate-800 text-slate-500 shadow-none"
+              : "rounded-lg bg-gradient-to-r from-cyan-500 to-blue-500 shadow-lg shadow-cyan-500/10 active:scale-[0.98] md:hover:from-cyan-400 md:hover:to-blue-400"
+          }`}
         >
           {loading ? "Booking Vehicle..." : "Book Now"}
         </Button>
