@@ -5,8 +5,6 @@ import React, { useState } from "react";
 import { useRouter } from "next/navigation";
 import toast from "react-hot-toast";
 import { authClient } from "@/lib/auth-client";
-import AuthGuard from "@/componants/AuthGuard";
-import { apiBaseUrl } from "@/lib/config";
 
 const fields = [
   ["name", "Car Name", "Toyota Corolla"],
@@ -44,11 +42,14 @@ const AddCarPage = () => {
     };
 
     try {
-      const response = await fetch(`${apiBaseUrl}/cars`, {
-        method: "POST",
-        headers: { "content-type": "application/json" },
-        body: JSON.stringify(carData),
-      });
+      const response = await fetch(
+        `${process.env.NEXT_PUBLIC_API_BASE_URL || "https://velo-drive-server.vercel.app"}/cars`,
+        {
+          method: "POST",
+          headers: { "content-type": "application/json" },
+          body: JSON.stringify(carData),
+        }
+      );
 
       const data = await response.json();
 
@@ -68,8 +69,7 @@ const AddCarPage = () => {
   };
 
   return (
-    <AuthGuard message="Checking authentication...">
-      <div className="relative min-h-screen overflow-hidden bg-slate-950 text-white select-none">
+    <div className="relative min-h-screen overflow-hidden bg-slate-950 text-white select-none">
         <div className="pointer-events-none absolute left-1/2 top-1/4 -z-0 h-96 w-96 -translate-x-1/2 -translate-y-1/2 rounded-full bg-cyan-500/5 blur-[120px]" />
 
         <main className="relative z-10 mx-auto max-w-5xl px-4 py-10">
@@ -159,7 +159,6 @@ const AddCarPage = () => {
           </form>
         </main>
       </div>
-    </AuthGuard>
   );
 };
 

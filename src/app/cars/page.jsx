@@ -2,7 +2,6 @@
 
 import ExploreCars from "@/componants/ExploreCars";
 import { useEffect, useState } from "react";
-import { apiBaseUrl } from "@/lib/config";
 
 const carTypes = ["All", "SUV", "Sedan", "Hatchback", "Luxury"];
 
@@ -23,9 +22,12 @@ const ExploreCarPage = () => {
       setLoading(true);
 
       try {
-        const res = await fetch(`${apiBaseUrl}/cars?${params.toString()}`, {
-          cache: "no-store",
-        });
+        const res = await fetch(
+          `${process.env.NEXT_PUBLIC_API_BASE_URL || "https://velo-drive-server.vercel.app"}/cars?${params.toString()}`,
+          {
+            cache: "no-store",
+          }
+        );
 
         if (!res.ok) throw new Error("Network response was not ok");
         const data = await res.json();

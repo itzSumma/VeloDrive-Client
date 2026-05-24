@@ -5,7 +5,6 @@ import React, { useState } from "react";
 import toast from "react-hot-toast";
 import { useRouter } from "next/navigation";
 import { authClient } from "@/lib/auth-client";
-import { apiBaseUrl } from "@/lib/config";
 
 const BookingCar = ({ destination: car }) => {
   const router = useRouter();
@@ -27,7 +26,9 @@ const BookingCar = ({ destination: car }) => {
     setLoading(true);
 
     try {
-      const res = await fetch(`${apiBaseUrl}/bookings`, {
+      const res = await fetch(
+        `${process.env.NEXT_PUBLIC_API_BASE_URL || "https://velo-drive-server.vercel.app"}/bookings`,
+        {
         method: "POST",
         headers: {
           "content-type": "application/json",
@@ -43,7 +44,7 @@ const BookingCar = ({ destination: car }) => {
           userEmail,
         }),
       });
-
+      console.log(res);
       if (!res.ok) {
         toast.error("Booking failed. Please try again.");
         return;

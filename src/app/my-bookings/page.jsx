@@ -3,9 +3,7 @@
 import { useEffect, useState } from "react";
 import toast from "react-hot-toast";
 import { authClient } from "@/lib/auth-client";
-import AuthGuard from "@/componants/AuthGuard";
 import LoadingScreen from "@/componants/LoadingScreen";
-import { apiBaseUrl } from "@/lib/config";
 
 const MyBookingsPage = () => {
   const { data: session, isPending } = authClient.useSession();
@@ -22,7 +20,7 @@ const MyBookingsPage = () => {
       try {
         setLoading(true);
         const res = await fetch(
-          `${apiBaseUrl}/bookings?email=${session.user.email}`
+          `${process.env.NEXT_PUBLIC_API_BASE_URL || "https://velo-drive-server.vercel.app"}/bookings?email=${session.user.email}`
         );
         if (!res.ok) throw new Error("Failed to fetch bookings");
         const data = await res.json();
@@ -45,8 +43,7 @@ const MyBookingsPage = () => {
   }
 
   return (
-    <AuthGuard message="Checking your booking access...">
-      <main className="relative mx-auto min-h-screen max-w-6xl overflow-hidden bg-slate-950 px-4 py-10 text-white select-none">
+    <main className="relative mx-auto min-h-screen max-w-6xl overflow-hidden bg-slate-950 px-4 py-10 text-white select-none">
         <div className="pointer-events-none absolute left-1/4 top-0 -z-0 h-96 w-96 rounded-full bg-cyan-500/5 blur-[120px]" />
 
         <div className="relative z-10 mb-8 border-b border-white/5 pb-5">
@@ -225,7 +222,6 @@ const MyBookingsPage = () => {
           )}
         </div>
       </main>
-    </AuthGuard>
   );
 };
 

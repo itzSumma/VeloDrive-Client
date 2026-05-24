@@ -1,6 +1,5 @@
 import { createAuthClient } from "better-auth/react";
-import { appBaseUrl } from "@/lib/config";
 
 export const authClient = createAuthClient({
-  baseURL: appBaseUrl,
+  baseURL: process.env.NEXT_PUBLIC_APP_URL || "https://velo-drive-client-kappa.vercel.app",
 });

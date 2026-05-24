@@ -2,16 +2,18 @@ import Banner from "@/componants/Banner";
 import ExploreCars from "@/componants/ExploreCars";
 import WhyChooseUs from "@/componants/WhyChooseUs";
 import HowItWorks from "@/componants/HowItWorks";
-import { apiBaseUrl } from "@/lib/config";
 
 export const dynamic = "force-dynamic";
 
 
 async function getCarsData() {
   try {
-    const res = await fetch(`${apiBaseUrl}/cars`, {
-      cache: "no-store",
-    });
+    const res = await fetch(
+      `${process.env.NEXT_PUBLIC_API_BASE_URL || "https://velo-drive-server.vercel.app"}/cars`,
+      {
+        cache: "no-store",
+      }
+    );
 
     if (!res.ok) {
       throw new Error("Failed to fetch cars data");

@@ -6,9 +6,7 @@ import { Button } from "@heroui/react";
 import toast from "react-hot-toast";
 import EditCarModal from "@/componants/EditCarModal";
 import DeleteConfirmModal from "@/componants/DeleteConfirmModal";
-import AuthGuard from "@/componants/AuthGuard";
 import LoadingScreen from "@/componants/LoadingScreen";
-import { apiBaseUrl } from "@/lib/config";
 
 const MyAddedCars = () => {
   const { data: session, isPending } = authClient.useSession();
@@ -25,7 +23,7 @@ const MyAddedCars = () => {
         try {
           setLoading(true);
           const res = await fetch(
-            `${apiBaseUrl}/my-added-cars?email=${session.user.email}`
+            `${process.env.NEXT_PUBLIC_API_BASE_URL || "https://velo-drive-server.vercel.app"}/my-added-cars?email=${session.user.email}`
           );
           const data = await res.json();
           setCars(data);
@@ -54,11 +52,14 @@ const MyAddedCars = () => {
 
     const loadingToast = toast.loading("Updating...");
     try {
-      const res = await fetch(`${apiBaseUrl}/cars/${id}`, {
-        method: "PUT",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(updatedData),
-      });
+      const res = await fetch(
+        `${process.env.NEXT_PUBLIC_API_BASE_URL || "https://velo-drive-server.vercel.app"}/cars/${id}`,
+        {
+          method: "PUT",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(updatedData),
+        }
+      );
       if (res.ok) {
         toast.dismiss(loadingToast);
         toast.success("Updated successfully!");
@@ -75,7 +76,10 @@ const MyAddedCars = () => {
 
   const handleDelete = async (id) => {
     try {
-      const res = await fetch(`${apiBaseUrl}/cars/${id}`, { method: "DELETE" });
+      const res = await fetch(
+        `${process.env.NEXT_PUBLIC_API_BASE_URL || "https://velo-drive-server.vercel.app"}/cars/${id}`,
+        { method: "DELETE" }
+      );
       if (res.ok) {
         toast.success("Deleted successfully!");
         setCars(cars.filter((c) => c._id !== id));
@@ -93,8 +97,7 @@ const MyAddedCars = () => {
   }
 
   return (
-    <AuthGuard message="Checking your garage access...">
-      <div className="min-h-screen bg-slate-950 p-6 text-white md:p-12">
+    <div className="min-h-screen bg-slate-950 p-6 text-white md:p-12">
         <h1 className="mb-8 text-3xl font-bold">My Added Cars</h1>
 
         <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
@@ -155,7 +158,6 @@ const MyAddedCars = () => {
           onDelete={handleDelete}
         />
       </div>
-    </AuthGuard>
   );
 };
 

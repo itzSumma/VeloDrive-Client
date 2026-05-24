@@ -13,6 +13,10 @@ export const auth = betterAuth({
   emailAndPassword: {
     enabled: true,
   },
+  trustedOrigins: [
+    "https://velo-drive-client-kappa.vercel.app",
+    "http://localhost:3000",
+  ],
   socialProviders: {
     google: {
       clientId: process.env.GOOGLE_CLIENT_ID,

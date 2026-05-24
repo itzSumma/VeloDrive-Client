@@ -6,7 +6,6 @@ import { useEffect, useState } from "react";
 import { LuMapPin } from "react-icons/lu";
 import { Users } from "lucide-react";
 import BookingCar from "@/componants/BookingCar";
-import { apiBaseUrl } from "@/lib/config";
 
 const CarDetailsPage = () => {
   const { id } = useParams();
@@ -14,7 +13,10 @@ const CarDetailsPage = () => {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    fetch(`${apiBaseUrl}/cars/${id}`, { cache: "no-store" })
+    fetch(
+      `${process.env.NEXT_PUBLIC_API_BASE_URL || "https://velo-drive-server.vercel.app"}/cars/${id}`,
+      { cache: "no-store" }
+    )
       .then((res) => {
         const contentType = res.headers.get("content-type");
         if (!res.ok || !contentType || !contentType.includes("application/json")) {
