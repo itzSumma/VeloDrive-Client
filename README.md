@@ -2,7 +2,7 @@
 
 Premium car rental platform built with Next.js, Better Auth, MongoDB, and a responsive booking-first UI.
 
-Live Site: `Add your deployed client URL here`
+Live Site: https://velo-drive-client-kappa.vercel.app
 
 ## Features
 

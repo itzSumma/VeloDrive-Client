@@ -22,9 +22,13 @@ const MyAddedCars = () => {
       const loadCars = async () => {
         try {
           setLoading(true);
+          const { data: tokenData } = await authClient.token();
+          if (!tokenData?.token) throw new Error("Your session has expired. Please log in again.");
           const res = await fetch(
-            `${process.env.NEXT_PUBLIC_API_BASE_URL || "https://velo-drive-server.vercel.app"}/my-added-cars?email=${session.user.email}`
+            `${process.env.NEXT_PUBLIC_API_BASE_URL || "https://velo-drive-server.vercel.app"}/my-added-cars`,
+            { headers: { authorization: `Bearer ${tokenData.token}` } }
           );
+          if (!res.ok) throw new Error("Failed to load cars");
           const data = await res.json();
           setCars(data);
         } catch {
@@ -52,11 +56,16 @@ const MyAddedCars = () => {
 
     const loadingToast = toast.loading("Updating...");
     try {
+      const { data: tokenData } = await authClient.token();
+      if (!tokenData?.token) throw new Error("Your session has expired. Please log in again.");
       const res = await fetch(
         `${process.env.NEXT_PUBLIC_API_BASE_URL || "https://velo-drive-server.vercel.app"}/cars/${id}`,
         {
           method: "PUT",
-          headers: { "Content-Type": "application/json" },
+          headers: {
+            "Content-Type": "application/json",
+            authorization: `Bearer ${tokenData.token}`,
+          },
           body: JSON.stringify(updatedData),
         }
       );
@@ -76,9 +85,11 @@ const MyAddedCars = () => {
 
   const handleDelete = async (id) => {
     try {
+      const { data: tokenData } = await authClient.token();
+      if (!tokenData?.token) throw new Error("Your session has expired. Please log in again.");
       const res = await fetch(
         `${process.env.NEXT_PUBLIC_API_BASE_URL || "https://velo-drive-server.vercel.app"}/cars/${id}`,
-        { method: "DELETE" }
+        { method: "DELETE", headers: { authorization: `Bearer ${tokenData.token}` } }
       );
       if (res.ok) {
         toast.success("Deleted successfully!");

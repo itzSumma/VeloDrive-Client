@@ -26,22 +26,21 @@ const BookingCar = ({ destination: car }) => {
     setLoading(true);
 
     try {
+      const { data: tokenData } = await authClient.token();
+      if (!tokenData?.token) throw new Error("Your session has expired. Please log in again.");
+
       const res = await fetch(
         `${process.env.NEXT_PUBLIC_API_BASE_URL || "https://velo-drive-server.vercel.app"}/bookings`,
         {
         method: "POST",
-        headers: {
-          "content-type": "application/json",
+          headers: {
+            "content-type": "application/json",
+            authorization: `Bearer ${tokenData.token}`,
         },
         body: JSON.stringify({
           carId: car._id,
-          carName: car.name,
-          carImage: car.image,
           driverNeeded,
           specialNote,
-          totalPrice: rent,
-          bookingDate: new Date().toISOString(),
-          userEmail,
         }),
       });
       console.log(res);
