@@ -77,7 +77,7 @@ const Navbar = () => {
               Explore Cars
             </Link>
           </li>
-          {!isPending && !session?.user && (
+          {!isPending && session?.user && (
             <>
               <li>
                 <Link
