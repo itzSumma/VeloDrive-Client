@@ -25,7 +25,7 @@ const MyAddedCars = () => {
           const { data: tokenData } = await authClient.token();
           if (!tokenData?.token) throw new Error("Your session has expired. Please log in again.");
           const res = await fetch(
-            `${process.env.NEXT_PUBLIC_API_BASE_URL || "https://velo-drive-server.vercel.app"}/my-added-cars`,
+            `${process.env.NEXT_PUBLIC_API_BASE_URL || "https://velo-drive-server-mauve.vercel.app"}/my-added-cars`,
             { headers: { authorization: `Bearer ${tokenData.token}` } }
           );
           if (!res.ok) throw new Error("Failed to load cars");
@@ -59,7 +59,7 @@ const MyAddedCars = () => {
       const { data: tokenData } = await authClient.token();
       if (!tokenData?.token) throw new Error("Your session has expired. Please log in again.");
       const res = await fetch(
-        `${process.env.NEXT_PUBLIC_API_BASE_URL || "https://velo-drive-server.vercel.app"}/cars/${id}`,
+        `${process.env.NEXT_PUBLIC_API_BASE_URL || "https://velo-drive-server-mauve.vercel.app"}/cars/${id}`,
         {
           method: "PUT",
           headers: {
@@ -88,7 +88,7 @@ const MyAddedCars = () => {
       const { data: tokenData } = await authClient.token();
       if (!tokenData?.token) throw new Error("Your session has expired. Please log in again.");
       const res = await fetch(
-        `${process.env.NEXT_PUBLIC_API_BASE_URL || "https://velo-drive-server.vercel.app"}/cars/${id}`,
+        `${process.env.NEXT_PUBLIC_API_BASE_URL || "https://velo-drive-server-mauve.vercel.app"}/cars/${id}`,
         { method: "DELETE", headers: { authorization: `Bearer ${tokenData.token}` } }
       );
       if (res.ok) {

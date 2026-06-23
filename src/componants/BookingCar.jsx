@@ -30,7 +30,7 @@ const BookingCar = ({ destination: car }) => {
       if (!tokenData?.token) throw new Error("Your session has expired. Please log in again.");
 
       const res = await fetch(
-        `${process.env.NEXT_PUBLIC_API_BASE_URL || "https://velo-drive-server.vercel.app"}/bookings`,
+        `${process.env.NEXT_PUBLIC_API_BASE_URL || "https://velo-drive-server-mauve.vercel.app"}/bookings`,
         {
         method: "POST",
           headers: {

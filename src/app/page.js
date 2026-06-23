@@ -9,7 +9,7 @@ export const dynamic = "force-dynamic";
 async function getCarsData() {
   try {
     const res = await fetch(
-      `${process.env.NEXT_PUBLIC_API_BASE_URL || "https://velo-drive-server.vercel.app"}/cars`,
+      `${process.env.NEXT_PUBLIC_API_BASE_URL || "https://velo-drive-server-mauve.vercel.app"}/cars`,
       {
         cache: "no-store",
       }

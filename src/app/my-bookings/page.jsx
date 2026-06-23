@@ -22,7 +22,7 @@ const MyBookingsPage = () => {
         const { data: tokenData } = await authClient.token();
         if (!tokenData?.token) throw new Error("Your session has expired. Please log in again.");
         const res = await fetch(
-          `${process.env.NEXT_PUBLIC_API_BASE_URL || "https://velo-drive-server.vercel.app"}/bookings`,
+          `${process.env.NEXT_PUBLIC_API_BASE_URL || "https://velo-drive-server-mauve.vercel.app"}/bookings`,
           { headers: { authorization: `Bearer ${tokenData.token}` } }
         );
         if (!res.ok) throw new Error("Failed to fetch bookings");
