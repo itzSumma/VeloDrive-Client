@@ -14,7 +14,7 @@ const CarDetailsPage = () => {
 
   useEffect(() => {
     fetch(
-      `${process.env.NEXT_PUBLIC_API_BASE_URL || "https://velo-drive-server.vercel.app"}/cars/${id}`,
+      `${process.env.NEXT_PUBLIC_API_BASE_URL || "https://velo-drive-server-mauve.vercel.app"}/cars/${id}`,
       { cache: "no-store" }
     )
       .then((res) => {

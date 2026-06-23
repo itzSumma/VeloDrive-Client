@@ -23,7 +23,7 @@ const ExploreCarPage = () => {
 
       try {
         const res = await fetch(
-          `${process.env.NEXT_PUBLIC_API_BASE_URL || "https://velo-drive-server.vercel.app"}/cars?${params.toString()}`,
+          `${process.env.NEXT_PUBLIC_API_BASE_URL || "https://velo-drive-server-mauve.vercel.app"}/cars?${params.toString()}`,
           {
             cache: "no-store",
           }
